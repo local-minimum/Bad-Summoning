@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public delegate void PlayerMoveEvent(GridCell fromCell, GridCell toCell);
+public delegate void PlayerMoveEvent(GridCell fromCell, GridCell toCell, Direction lookDirection);
 
 public class PlayerController : GridEntity
 {
@@ -17,6 +17,7 @@ public class PlayerController : GridEntity
         {
             _lookDirection = value;
             transform.rotation = _lookDirection.ToLookVector().AsQuaternion();
+            OnPlayerMove?.Invoke(cell, cell, value);
         }
     }
 
@@ -45,7 +46,7 @@ public class PlayerController : GridEntity
             if (oldCell != null) oldCell.HasPlayer = false;
             newCell.HasPlayer = true;
 
-            OnPlayerMove?.Invoke(oldCell, newCell);
+            OnPlayerMove?.Invoke(oldCell, newCell, LookDirection);
          });        
     }
 

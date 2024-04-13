@@ -14,7 +14,7 @@ public class PlayerFacingBillboard : MonoBehaviour
         PlayerController.OnPlayerMove -= PlayerController_OnPlayerMove;
     }
 
-    private void PlayerController_OnPlayerMove(GridCell fromCell, GridCell toCell)
+    private void PlayerController_OnPlayerMove(GridCell fromCell, GridCell toCell, Direction d)
     {
         var lookAt = toCell.Coords.ToPosition();
         var lookDirection = lookAt - transform.position;
