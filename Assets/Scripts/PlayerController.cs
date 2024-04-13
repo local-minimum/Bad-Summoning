@@ -5,16 +5,9 @@ using UnityEngine.InputSystem;
 
 public delegate void PlayerMoveEvent(GridCell fromCell, GridCell toCell);
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : GridEntity
 {
     public static event PlayerMoveEvent OnPlayerMove;
-
-    private static HashSet<MonoBehaviour> movementBlockers = new HashSet<MonoBehaviour>();
-    public static void BlockMovement(MonoBehaviour behaviour) => movementBlockers.Add(behaviour);
-    public static void RemoveMovementBlock(MonoBehaviour behaviour) => movementBlockers.Remove(behaviour);
-    public static bool MovementBlocked => movementBlockers.Count > 0;
-
-    GridCell cell;
 
     Direction _lookDirection;
     public Direction LookDirection
@@ -31,14 +24,14 @@ public class PlayerController : MonoBehaviour
     {
         if (cell == null)
         {
-            Debug.Log("Player is not on the grid!");
+            Debug.Log($"{name} is not on the grid!");
             return;
         }
 
         var newCell = cell.Neighbour(direction);
         if (newCell == null)
         {
-            Debug.Log($"Can't move {direction} from {name} / {cell.Coords}");
+            Debug.Log($"{name} can't move {direction} from {cell.name} / {cell.Coords}");
             return;
         }
 
@@ -46,24 +39,14 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void ChangeCell(GridCell newCell)
-    {        
-        if (newCell == null)
-        {
-            return;
-        }
+    private void ChangeCell(GridCell toCell)
+    {
+        ChangeCell(toCell, (oldCell, newCell) => {
+            if (oldCell != null) oldCell.HasPlayer = false;
+            newCell.HasPlayer = true;
 
-        if (cell != null) {
-            cell.HasPlayer = false;
-        }
-        
-        var oldCell = cell;
-
-        cell = newCell;
-        cell.HasPlayer = true;
-        transform.position = cell.Coords.ToPosition();
-
-        OnPlayerMove?.Invoke(oldCell, cell);
+            OnPlayerMove?.Invoke(oldCell, newCell);
+         });        
     }
 
     #region InputHandling
@@ -106,9 +89,8 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         if (cell == null)
-        {
-            cell = GridCell.Map[transform.position.ToVector2Int()];
-            ChangeCell(cell);            
+        {            
+            ChangeCell(GridCell.Map[transform.position.ToVector2Int()]);            
 
             LookDirection = LookDirection;
         }

@@ -53,10 +53,10 @@ public class GridCell : MonoBehaviour
         return Map[neighbourCoords];
     }
 
-    public bool UnOccupied => true;
+    public bool Occupied => HasPlayer || HasEnemy;
 
     public bool HasPlayer { get; set; } = false;
-    
+    public bool HasEnemy { get; set; } = false;
 
     #region Coords
     bool coordsInited = false;
