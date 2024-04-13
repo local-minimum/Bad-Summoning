@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public delegate void GameEndEvent(Direction direction);
 
@@ -10,6 +11,15 @@ public class GameEnd : MonoBehaviour
 
     [SerializeField]
     Direction forceDirection = Direction.South;
+
+    [SerializeField]
+    string message = "This is where you need to be";
+
+    [SerializeField]
+    string endScene;
+
+    [SerializeField, Range(0, 10)]
+    float loadDelay = 4f;
 
     private void OnEnable()
     {
@@ -33,8 +43,21 @@ public class GameEnd : MonoBehaviour
         if (toCell == cell)
         {
             GridEntity.BlockMovement(this);
-            PromptUI.instance.ShowText("The End");
+            PromptUI.instance.ShowText(message);
             OnGameEnd?.Invoke(forceDirection);
+            endTime = Time.timeSinceLevelLoad + loadDelay;
+            ending = true;
         }
     }
+
+    float endTime;
+    bool ending;
+
+    private void Update()
+    {
+        if (!ending || Time.timeSinceLevelLoad < endTime) { return; }
+
+        SceneManager.LoadScene(endScene);
+    }
+
 }

@@ -20,7 +20,8 @@ public class PlayerController : GridEntity
         {
             _lookDirection = value;
             transform.rotation = _lookDirection.ToLookVector().AsQuaternion();
-            OnPlayerMove?.Invoke(cell, cell, value);
+            if (!MovementBlocked)
+                OnPlayerMove?.Invoke(cell, cell, value);
         }
     }
 

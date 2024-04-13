@@ -73,13 +73,20 @@ public class HealthClock : MonoBehaviour
     {
         Enemy.OnAttackPlayer += Enemy_OnAttackPlayer;
         Fireball.OnHitPlayer += Fireball_OnHitPlayer;
+        GameEnd.OnGameEnd += GameEnd_OnGameEnd;
     }
 
     private void OnDisable()
     {
         Enemy.OnAttackPlayer -= Enemy_OnAttackPlayer;
         Fireball.OnHitPlayer -= Fireball_OnHitPlayer;
+        GameEnd.OnGameEnd -= GameEnd_OnGameEnd;
     }
+    private void GameEnd_OnGameEnd(Direction direction)
+    {
+        gameEnded = true;
+    }
+
     private void Fireball_OnHitPlayer(Fireball ball)
     {
         HealthTime = Mathf.Max(0, HealthTime - ball.BallDamage);
@@ -99,9 +106,11 @@ public class HealthClock : MonoBehaviour
         CheckDeath();
     }
 
+    bool gameEnded;
+
     private void Update()
     {
-        if (HealthTime == 0) return;
+        if (gameEnded || HealthTime == 0) return;
 
         if (showingBad && Time.timeSinceLevelLoad > hideBadTime)
         {
