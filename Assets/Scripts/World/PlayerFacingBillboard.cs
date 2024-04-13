@@ -20,6 +20,7 @@ public class PlayerFacingBillboard : MonoBehaviour
     private void PlayerController_OnPlayerMove(GridCell fromCell, GridCell toCell, Direction d)
     {
         LookTarget = toCell.Coords.ToPosition();
+        Sync();
     }
 
     public void Sync()
