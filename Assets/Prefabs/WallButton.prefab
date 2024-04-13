@@ -119,8 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e628d27f1d0515c4b8af10f4efe6806e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Walls:
-  - {fileID: 0}
+  Walls: []
   AllowRepeatPresses: 0
   InteractDirection: 0
   OnTex: {fileID: 2800000, guid: dcd665bf9db423545b1673807bfd9433, type: 3}
