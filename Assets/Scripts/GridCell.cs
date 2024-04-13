@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GridCell : MonoBehaviour
 {
-    public static Dictionary<Vector3Int, GridCell> Map;
+    public static Dictionary<Vector2Int, GridCell> Map = new Dictionary<Vector2Int, GridCell>();
 
     [SerializeField]
     GameObject Roof;
@@ -34,4 +34,60 @@ public class GridCell : MonoBehaviour
                 return false;
         }
     }
+
+    public GridCell Neighbour(Direction direction)
+    {
+        var neighbourCoords = Coords.Translate(direction);
+        if (!Map.ContainsKey(neighbourCoords))
+        {
+            Debug.Log($"{name}/{Coords} has no {direction} neighbour at {neighbourCoords}");
+            return null;
+        }
+
+        if (HasWall(direction))
+        {
+            Debug.Log($"{name}/{Coords} has a {direction} wall");
+            return null;
+        }
+
+        return Map[neighbourCoords];
+    }
+
+    public bool UnOccupied => true;
+
+    public bool HasPlayer { get; set; } = false;
+    
+
+    #region Coords
+    bool coordsInited = false;
+    Vector2Int _coords;
+    public Vector2Int Coords
+    {
+        get { 
+            if (!coordsInited)
+            {
+                coordsInited = true;
+                _coords = transform.position.ToVector2Int();
+            }
+            return _coords; 
+        }
+    }
+    #endregion
+
+    private void Start()
+    {
+        
+        if (Map.ContainsKey(Coords))
+        {
+            throw new System.ArgumentException($"Duplicate grid cells at {Coords}: {name} & {Map[Coords].name}");
+        } else
+        {
+            Map.Add(Coords, this);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        Map.Remove(Coords);
+    }    
 }
