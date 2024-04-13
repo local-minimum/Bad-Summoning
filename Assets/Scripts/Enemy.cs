@@ -4,14 +4,26 @@ using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
+public delegate void EnemyDeathEvent(Enemy enemy);
+public delegate void AttackPlayerEvent(int damage);
+
 enum WoundPhase { Resting, Fill, Intermission, Linger }
 
 public class Enemy : GridEntity
 {
+    public static event EnemyDeathEvent OnEnemyDeath;
+    public static event AttackPlayerEvent OnAttackPlayer;
+
     [SerializeField]
     Image leftHandWound;
     [SerializeField]
     Image rightHandWound;
+
+    [SerializeField, Range(0, 10)]
+    int startHealth = 5;
+
+    [SerializeField, Range(0, 10)]
+    int attackDamage = 3;
 
     [SerializeField, Range(0, 1)]
     float woundAnimationDuration = 0.3f;
@@ -20,21 +32,36 @@ public class Enemy : GridEntity
     [SerializeField, Range(0, 2)]
     float lastWoundLinger = 1f;
 
+    public int Health { get; private set; }
+
     private void OnEnable()
     {
+        Health = startHealth;
         leftHandWound.enabled = false;
         rightHandWound.enabled = false;
 
+        PlayerController.OnPlayerMove += PlayerController_OnPlayerMove;
         AttackUI.OnAttack += AttackUI_OnAttack;
     }
 
+
     private void OnDisable()
     {
+        PlayerController.OnPlayerMove -= PlayerController_OnPlayerMove;
         AttackUI.OnAttack -= AttackUI_OnAttack;
+    }
+
+    bool playerIsAttackingMe;
+
+    private void PlayerController_OnPlayerMove(GridCell fromCell, GridCell toCell, Direction lookDirection)
+    {
+        playerIsAttackingMe = toCell.Neighbour(lookDirection) == cell;    
     }
 
     private void AttackUI_OnAttack(AttackModifier modifier)
     {
+        if (!playerIsAttackingMe) return;
+
         if (modifier == AttackModifier.Crit)
         {
             showWounds = 3;
@@ -92,8 +119,17 @@ public class Enemy : GridEntity
 
             if (fill == 1)
             {
+                Health--;
+
                 woundPhase = WoundPhase.Intermission;
                 woundPhaseStart = Time.timeSinceLevelLoad;
+
+                if (Health <= 0)
+                {
+                    cell.HasEnemy = false;
+                    OnEnemyDeath?.Invoke(this);
+                    Destroy(gameObject);
+                }
             }
         } else if (woundPhase == WoundPhase.Intermission)
         {
@@ -105,6 +141,7 @@ public class Enemy : GridEntity
                 if (showWounds <= 0)
                 {
                     woundPhase = WoundPhase.Linger;
+                    OnAttackPlayer?.Invoke(attackDamage);
                 }
                 else
                 {
@@ -119,7 +156,7 @@ public class Enemy : GridEntity
             {
                 woundPhase = WoundPhase.Resting;
                 leftHandWound.enabled = false;
-                rightHandWound.enabled = false;
+                rightHandWound.enabled = false;                
             }
         }
     }

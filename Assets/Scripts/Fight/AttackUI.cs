@@ -11,6 +11,9 @@ public class AttackUI : MonoBehaviour
     [SerializeField, Range(0, 4)]
     float speed = 0.8f;
 
+    [SerializeField, Range(0, 2)]
+    float betweenAttackPause = 0.75f;
+
     public static event AttackEvent OnAttack;
 
     List<AttackZone> _attackZones;
@@ -45,48 +48,59 @@ public class AttackUI : MonoBehaviour
     }
 
     bool Fighting;
+    bool Hidden;
 
     void Show()
     {
-        Fighting = true;
         SetRandomZone();
         transform.ShowAllChildren();
         Marker.speed = speed;
+        Hidden = false;
     }
 
 
     private void Hide()
     {
-        Fighting = false;
         transform.HideAllChildren();
+        Hidden = true;
     }
 
     private void OnEnable()
     {
         Hide();
         PlayerController.OnPlayerMove += PlayerController_OnPlayerMove;
+        Enemy.OnEnemyDeath += Enemy_OnEnemyDeath;
     }
 
     private void OnDisable()
     {
         PlayerController.OnPlayerMove -= PlayerController_OnPlayerMove;
+        Enemy.OnEnemyDeath -= Enemy_OnEnemyDeath;
+    }
+
+    private void Enemy_OnEnemyDeath(Enemy e)
+    {
+        Fighting = false;
+        Hide();
     }
 
     private void PlayerController_OnPlayerMove(GridCell fromCell, GridCell toCell, Direction lookDirection)
     {
-        var facingEnemy = toCell.Neighbour(lookDirection).HasEnemy;
+        var facingEnemy = toCell.Neighbour(lookDirection)?.HasEnemy ?? false;
         if (Fighting && !facingEnemy)
         {
             Hide();
+            Fighting = false;
         } else if (!Fighting && facingEnemy)
         {
             Show();
+            Fighting = true;
         }
     }
 
     public void DoAttack(InputAction.CallbackContext context)
     {
-        if (!Fighting || !context.performed) { return; }
+        if (!Fighting || Hidden || !context.performed) { return; }
 
         var progress = Marker.Progress;
 
@@ -98,6 +112,18 @@ public class AttackUI : MonoBehaviour
             Debug.Log($"Performed an {modifier} attack");
 
             OnAttack?.Invoke(modifier);
+        }
+
+        Hide();
+        reShowAttackTime = Time.timeSinceLevelLoad + betweenAttackPause;
+    }
+
+    float reShowAttackTime;
+
+    private void Update()
+    {
+        if (Fighting && Hidden && Time.timeSinceLevelLoad > reShowAttackTime) { 
+            Show();
         }
     }
 }
