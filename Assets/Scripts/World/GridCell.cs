@@ -83,6 +83,7 @@ public class GridCell : MonoBehaviour
         } else
         {
             Map.Add(Coords, this);
+            name = $"GridCells @ [{Coords.x}, {Coords.y}] ({name})";
         }
     }
 

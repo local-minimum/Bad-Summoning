@@ -72,11 +72,20 @@ public class HealthClock : MonoBehaviour
     private void OnEnable()
     {
         Enemy.OnAttackPlayer += Enemy_OnAttackPlayer;
+        Fireball.OnHitPlayer += Fireball_OnHitPlayer;
     }
 
     private void OnDisable()
     {
         Enemy.OnAttackPlayer -= Enemy_OnAttackPlayer;
+        Fireball.OnHitPlayer -= Fireball_OnHitPlayer;
+    }
+    private void Fireball_OnHitPlayer(Fireball ball)
+    {
+        HealthTime = Mathf.Max(0, HealthTime - ball.BallDamage);
+        SyncDisplay(true);
+
+        nextTick = Time.timeSinceLevelLoad + tickFrequency;
     }
 
     private void Enemy_OnAttackPlayer(int damage)

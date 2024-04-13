@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerFacingBillboard : MonoBehaviour
@@ -14,11 +15,17 @@ public class PlayerFacingBillboard : MonoBehaviour
         PlayerController.OnPlayerMove -= PlayerController_OnPlayerMove;
     }
 
+    public Vector3 LookTarget { get; set; }
+
     private void PlayerController_OnPlayerMove(GridCell fromCell, GridCell toCell, Direction d)
     {
-        var lookAt = toCell.Coords.ToPosition();
-        var lookDirection = lookAt - transform.position;
-        lookDirection.y = 0; 
+        LookTarget = toCell.Coords.ToPosition();
+    }
+
+    public void Sync()
+    {
+        var lookDirection = LookTarget - transform.position;
+        lookDirection.y = 0;
         transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
     }
 }
