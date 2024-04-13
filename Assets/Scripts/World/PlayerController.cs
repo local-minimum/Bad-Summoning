@@ -86,7 +86,30 @@ public class PlayerController : GridEntity
         if (context.performed) LookDirection = LookDirection.RotateCW();
     }
     #endregion
-   
+
+    private void OnEnable()
+    {
+        Spinner.OnSpinPlayer += Spinner_OnSpinPlayer;
+    }
+
+    private void OnDisable()
+    {
+        Spinner.OnSpinPlayer -= Spinner_OnSpinPlayer;
+    }
+
+    private void Spinner_OnSpinPlayer(SpinDirection direction)
+    {
+        switch (direction)
+        {
+            case SpinDirection.Clockwise:
+                LookDirection = LookDirection.RotateCW();
+                break;
+            case SpinDirection.CounterClockwise:
+                LookDirection = LookDirection.RotateCCW();
+                break;
+        }
+    }
+
     private void Update()
     {
         if (cell == null)
