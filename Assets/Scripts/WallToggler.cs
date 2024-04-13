@@ -71,7 +71,9 @@ public class WallToggler : MonoBehaviour
     }
 
     bool _interactable;
-    
+
+    [SerializeField]
+    string prompt;
 
     bool Interactable
     {
@@ -81,9 +83,11 @@ public class WallToggler : MonoBehaviour
             if (!_interactable && value)
             {
                 RegisterCallback();
+                PromptUI.instance.ShowText(prompt);
             } else if (_interactable && !value)
             {
                 UnregisterCallback();
+                PromptUI.instance.HideText(prompt);
             }
             _interactable = value;            
         }
