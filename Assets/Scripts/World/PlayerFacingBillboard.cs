@@ -27,6 +27,7 @@ public class PlayerFacingBillboard : MonoBehaviour
     {
         var lookDirection = LookTarget - transform.position;
         lookDirection.y = 0;
-        transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
+        if (lookDirection.magnitude > 0)
+            transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
     }
 }

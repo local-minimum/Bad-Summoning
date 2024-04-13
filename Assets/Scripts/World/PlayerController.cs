@@ -94,12 +94,18 @@ public class PlayerController : GridEntity
     {
         Spinner.OnSpinPlayer += Spinner_OnSpinPlayer;
         HealthClock.OnHealthTimeZero += HealthClock_OnHealthTimeZero;
+        GameEnd.OnGameEnd += GameEnd_OnGameEnd;
     }
 
     private void OnDisable()
     {
         Spinner.OnSpinPlayer -= Spinner_OnSpinPlayer;
         HealthClock.OnHealthTimeZero -= HealthClock_OnHealthTimeZero;        
+        GameEnd.OnGameEnd -= GameEnd_OnGameEnd;
+    }
+    private void GameEnd_OnGameEnd(Direction direction)
+    {
+        LookDirection = direction;
     }
 
     private void HealthClock_OnHealthTimeZero()
