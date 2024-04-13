@@ -35,17 +35,31 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        var newTile = cell.Neighbour(direction);
-        if (newTile == null)
+        var newCell = cell.Neighbour(direction);
+        if (newCell == null)
         {
             Debug.Log($"Can't move {direction} from {name} / {cell.Coords}");
             return;
         }
 
-        cell.HasPlayer = false;
+        ChangeCell(newCell);
+    }
+
+
+    private void ChangeCell(GridCell newCell)
+    {        
+        if (newCell == null)
+        {
+            return;
+        }
+
+        if (cell != null) {
+            cell.HasPlayer = false;
+        }
+        
         var oldCell = cell;
 
-        cell = newTile;
+        cell = newCell;
         cell.HasPlayer = true;
         transform.position = cell.Coords.ToPosition();
 
@@ -94,6 +108,9 @@ public class PlayerController : MonoBehaviour
         if (cell == null)
         {
             cell = GridCell.Map[transform.position.ToVector2Int()];
+            ChangeCell(cell);            
+
+            LookDirection = LookDirection;
         }
     }
 
