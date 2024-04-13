@@ -9,6 +9,9 @@ public class PlayerController : GridEntity
 {
     public static event PlayerMoveEvent OnPlayerMove;
 
+    [SerializeField]
+    Direction startDirection = Direction.East;
+
     Direction _lookDirection;
     public Direction LookDirection
     {
@@ -90,11 +93,18 @@ public class PlayerController : GridEntity
     private void OnEnable()
     {
         Spinner.OnSpinPlayer += Spinner_OnSpinPlayer;
+        HealthClock.OnHealthTimeZero += HealthClock_OnHealthTimeZero;
     }
 
     private void OnDisable()
     {
         Spinner.OnSpinPlayer -= Spinner_OnSpinPlayer;
+        HealthClock.OnHealthTimeZero -= HealthClock_OnHealthTimeZero;        
+    }
+
+    private void HealthClock_OnHealthTimeZero()
+    {
+        Respawn();
     }
 
     private void Spinner_OnSpinPlayer(SpinDirection direction)
@@ -110,13 +120,20 @@ public class PlayerController : GridEntity
         }
     }
 
+    static Vector2Int SpawnCoordinates;
+
+    void Respawn()
+    {
+        ChangeCell(GridCell.Map[SpawnCoordinates]);
+        LookDirection = startDirection;
+    }
+
     private void Update()
     {
         if (cell == null)
-        {            
-            ChangeCell(GridCell.Map[transform.position.ToVector2Int()]);            
-
-            LookDirection = LookDirection;
+        {
+            SpawnCoordinates = transform.position.ToVector2Int();
+            Respawn();
         }
     }
 

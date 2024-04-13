@@ -86,6 +86,7 @@ public class HealthClock : MonoBehaviour
         SyncDisplay(true);
 
         nextTick = Time.timeSinceLevelLoad + tickFrequency;
+        CheckDeath();
     }
 
     private void Enemy_OnAttackPlayer(int damage)
@@ -95,6 +96,7 @@ public class HealthClock : MonoBehaviour
         SyncDisplay(true);
 
         nextTick = Time.timeSinceLevelLoad + tickFrequency;
+        CheckDeath();
     }
 
     private void Update()
@@ -111,11 +113,17 @@ public class HealthClock : MonoBehaviour
             nextTick = Time.timeSinceLevelLoad + tickFrequency;
             HealthTime--;
             SyncDisplay(true);
+            CheckDeath();
+        }
+    }
 
-            if (HealthTime <= 0)
-            {
-                OnHealthTimeZero?.Invoke();
-            }
+    void CheckDeath()
+    {
+        if (HealthTime <= 0)
+        {
+            OnHealthTimeZero?.Invoke();
+            HealthTime = StartHealthTime;
+            nextTick = Time.timeSinceLevelLoad + tickFrequency;
         }
     }
 }
