@@ -32,6 +32,9 @@ public class Enemy : GridEntity
     [SerializeField, Range(0, 2)]
     float lastWoundLinger = 1f;
 
+    [SerializeField]
+    AudioClip[] hitSounds;
+
     public int Health { get; private set; }
 
     private void OnEnable()
@@ -62,6 +65,7 @@ public class Enemy : GridEntity
     {
         if (!playerIsAttackingMe) return;
 
+        screamed = false;
         if (modifier == AttackModifier.Crit)
         {
             showWounds = 3;
@@ -97,6 +101,8 @@ public class Enemy : GridEntity
         }
     }
 
+    bool screamed;
+
     private void Update()
     {
         if (cell == null)
@@ -116,6 +122,11 @@ public class Enemy : GridEntity
         {
             var fill = Mathf.Clamp01((Time.timeSinceLevelLoad - woundPhaseStart) / woundAnimationDuration);
             SynchVisibleWound(fill);
+            if (!screamed)
+            {
+                Speaker.PlayOneShot(hitSounds.GetRandomElement());
+                screamed = true;
+            }
 
             if (fill == 1)
             {
@@ -146,6 +157,7 @@ public class Enemy : GridEntity
                 else
                 {
                     woundPhase = WoundPhase.Fill;
+                    screamed = false;
                 }
                 woundPhaseStart = Time.timeSinceLevelLoad;
             }

@@ -20,7 +20,23 @@ public class FireballShooter : MonoBehaviour
     [SerializeField, Range(0, 20)]
     float initialDelay = 1f;
 
+    [SerializeField]
+    AudioClip[] ShootSounds;
+
     List<Fireball> Fireballs = new List<Fireball>();
+
+    AudioSource _speaker;
+    protected AudioSource Speaker
+    {
+        get
+        {
+            if (_speaker == null)
+            {
+                _speaker = GetComponent<AudioSource>();
+            }
+            return _speaker;
+        }
+    }
 
     Fireball GetFireball()
     {
@@ -42,7 +58,9 @@ public class FireballShooter : MonoBehaviour
 
         ball.GetComponent<PlayerFacingBillboard>().LookTarget = ballLookTarget;
 
-        ball.gameObject.SetActive(true);        
+        ball.gameObject.SetActive(true);
+
+        Speaker.PlayOneShot(ShootSounds.GetRandomElement());
     }
 
     float nextBall;

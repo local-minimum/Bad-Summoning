@@ -21,6 +21,22 @@ public class WallToggler : MonoBehaviour
     [SerializeField]
     Texture OffTex;
 
+    [SerializeField]
+    AudioClip[] ToggleSounds;
+
+    AudioSource _speaker;
+    protected AudioSource Speaker
+    {
+        get
+        {
+            if (_speaker == null)
+            {
+                _speaker = GetComponent<AudioSource>();
+            }
+            return _speaker;
+        }
+    }
+
     private void Start()
     {
         cell = GetComponentInParent<GridCell>();
@@ -149,5 +165,6 @@ public class WallToggler : MonoBehaviour
         if (!Interactable) { return; }
 
         On = !On;
+        Speaker.PlayOneShot(ToggleSounds.GetRandomElement());
     }
 }

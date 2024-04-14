@@ -12,13 +12,35 @@ public class Fireball : MonoBehaviour
 
     [SerializeField]
     PlayerFacingBillboard billboard;
+    
+    [SerializeField]
+    AudioClip[] Sounds;
 
+    [SerializeField, Range(0,5)]
+    float soundPauseMin = 0.5f;
+
+    [SerializeField, Range(0,5)]
+    float soundPauseMax = 2f;
+
+    AudioSource _speaker;
+    protected AudioSource Speaker
+    {
+        get
+        {
+            if (_speaker == null)
+            {
+                _speaker = GetComponent<AudioSource>();
+            }
+            return _speaker;
+        }
+    }
     public Vector3 Speed { get; set; }
     public int BallDamage { get; set; } 
 
     private void OnEnable()
     {
         PlayerController.OnPlayerMove += PlayerController_OnPlayerMove;
+        nextSound = Random.Range(soundPauseMin, soundPauseMax) + Time.timeSinceLevelLoad;
     }
 
     private void OnDisable()
@@ -52,9 +74,17 @@ public class Fireball : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    float nextSound;
+
     private void Update()
     {
         transform.position += Speed * Time.deltaTime;
         billboard.Sync();
+
+        if (Time.timeSinceLevelLoad > nextSound)
+        {
+            nextSound = Random.Range(soundPauseMin, soundPauseMax) + Time.timeSinceLevelLoad;
+            Speaker.PlayOneShot(Sounds.GetRandomElement());
+        }
     }
 }

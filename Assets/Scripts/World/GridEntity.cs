@@ -9,6 +9,19 @@ public abstract class GridEntity : MonoBehaviour
     public static void RemoveMovementBlock(MonoBehaviour behaviour) => movementBlockers.Remove(behaviour);
     public static bool MovementBlocked => movementBlockers.Count > 0;
 
+    AudioSource _speaker;
+    protected AudioSource Speaker
+    {
+        get
+        {
+            if (_speaker == null)
+            {
+                _speaker = GetComponent<AudioSource>();
+            }
+            return _speaker;
+        }
+    }
+
     protected GridCell cell;
 
     protected void ChangeCell(GridCell newCell, System.Action<GridCell, GridCell> OnChange)

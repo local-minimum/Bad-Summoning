@@ -12,6 +12,13 @@ public class PlayerController : GridEntity
     [SerializeField]
     Direction startDirection = Direction.East;
 
+    [SerializeField]
+    AudioClip[] AngrySounds;
+    [SerializeField]
+    AudioClip[] WalkSounds;
+    [SerializeField]
+    AudioClip[] BallHits;
+
     Direction _lookDirection;
     public Direction LookDirection
     {
@@ -29,7 +36,7 @@ public class PlayerController : GridEntity
     {
         if (cell == null)
         {
-            Debug.Log($"{name} is not on the grid!");
+            Debug.Log($"{name} is not on the grid!");            
             return;
         }
 
@@ -40,6 +47,7 @@ public class PlayerController : GridEntity
             return;
         }
 
+        Speaker.PlayOneShot(WalkSounds.GetRandomElement());
         ChangeCell(newCell);
     }
 
@@ -96,14 +104,30 @@ public class PlayerController : GridEntity
         Spinner.OnSpinPlayer += Spinner_OnSpinPlayer;
         HealthClock.OnHealthTimeZero += HealthClock_OnHealthTimeZero;
         GameEnd.OnGameEnd += GameEnd_OnGameEnd;
+        Fireball.OnHitPlayer += Fireball_OnHitPlayer;
+        Enemy.OnAttackPlayer += Enemy_OnAttackPlayer;
     }
+
 
     private void OnDisable()
     {
         Spinner.OnSpinPlayer -= Spinner_OnSpinPlayer;
         HealthClock.OnHealthTimeZero -= HealthClock_OnHealthTimeZero;        
         GameEnd.OnGameEnd -= GameEnd_OnGameEnd;
+        Fireball.OnHitPlayer -= Fireball_OnHitPlayer;
+        Enemy.OnAttackPlayer -= Enemy_OnAttackPlayer;
     }
+
+    private void Enemy_OnAttackPlayer(int damage)
+    {
+        Speaker.PlayOneShot(AngrySounds.GetRandomElement());
+    }
+
+    private void Fireball_OnHitPlayer(Fireball ball)
+    {
+        Speaker.PlayOneShot(BallHits.GetRandomElement());
+    }
+
     private void GameEnd_OnGameEnd(Direction direction)
     {
         LookDirection = direction;
@@ -133,6 +157,7 @@ public class PlayerController : GridEntity
     {
         ChangeCell(GridCell.Map[SpawnCoordinates]);
         LookDirection = startDirection;
+        Speaker.PlayOneShot(AngrySounds.GetRandomElement());
     }
 
     private void Update()
