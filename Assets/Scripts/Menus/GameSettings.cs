@@ -6,12 +6,22 @@ using UnityEngine;
 public class GameSettings : MonoBehaviour
 {
     static string InvertedControlsKey = "Input.InvertTurnStrafe";
+    static bool _invertedSynced = false;
+    static bool _cachedInvertedValue = false;
     public static bool InvertedControls
     {
-        get => PlayerPrefs.GetInt(InvertedControlsKey, 0) == 1;
+        get {
+            if (_invertedSynced) return _cachedInvertedValue;
+
+            _cachedInvertedValue = PlayerPrefs.GetInt(InvertedControlsKey, 0) == 1;
+            _invertedSynced = true;
+            return _cachedInvertedValue;
+        }
         set
         {
             PlayerPrefs.SetInt(InvertedControlsKey, value ? 1 : 0);
+            _invertedSynced = true;
+            _cachedInvertedValue = value;
         }
     }
 

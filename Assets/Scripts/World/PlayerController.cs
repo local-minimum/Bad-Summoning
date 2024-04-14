@@ -78,24 +78,64 @@ public class PlayerController : GridEntity
     public void OnMoveLeft(InputAction.CallbackContext context)
     {
         if (MovementBlocked) return;
-        if (context.performed) Translate(LookDirection.RotateCCW());
+        if (context.performed)
+        {
+            if (GameSettings.InvertedControls)
+            {
+                LookDirection = LookDirection.RotateCCW();
+            } else
+            {
+                Translate(LookDirection.RotateCCW());
+            }            
+        }
     }
 
     public void OnMoveRight(InputAction.CallbackContext context)
     {
         if (MovementBlocked) return;
-        if (context.performed) Translate(LookDirection.RotateCW());
+        if (context.performed)
+        {
+            if (GameSettings.InvertedControls)
+            {
+                LookDirection = LookDirection.RotateCW();
+            }
+            else
+            {
+                Translate(LookDirection.RotateCW());
+            }           
+        }
     }
 
     public void OnRotateCCW(InputAction.CallbackContext context)
     {
         if (MovementBlocked) return;
-        if (context.performed) LookDirection = LookDirection.RotateCCW();
+        if (context.performed)
+        {
+            if (GameSettings.InvertedControls)
+            {
+                Translate(LookDirection.RotateCCW());
+            } else
+            {
+                LookDirection = LookDirection.RotateCCW();
+            }
+            
+        }
     }
     public void OnRotateCW(InputAction.CallbackContext context)
     {
         if (MovementBlocked) return;
-        if (context.performed) LookDirection = LookDirection.RotateCW();
+        if (context.performed)
+        {
+            if (GameSettings.InvertedControls)
+            {
+                Translate(LookDirection.RotateCW());
+
+            }
+            else
+            {
+                LookDirection = LookDirection.RotateCW();
+            }            
+        }
     }
     #endregion
 
