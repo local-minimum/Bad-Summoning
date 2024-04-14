@@ -27,10 +27,13 @@ public class SimpleButton : MonoBehaviour
 
     public string Text
     {
-        get => ColorTarget.text;
+        get => ColorTarget?.text;
         set
         {
-            ColorTarget.text = value;
+            if (ColorTarget)
+            {
+                ColorTarget.text = value;
+            }
         }
     }
 
@@ -51,14 +54,20 @@ public class SimpleButton : MonoBehaviour
     public void Selected()
     {
         Debug.Log($"Selected {name}");
-        ColorTarget.color = SelectedColor;
+        if (ColorTarget != null)
+        {
+            ColorTarget.color = SelectedColor;
+        }
         Group.Selected = this;
     }
 
     public void DeSelect()
     {
         Debug.Log($"Deselected {name}");
-        ColorTarget.color = DefaultColor;
+        if (ColorTarget != null)
+        {
+            ColorTarget.color = DefaultColor;
+        }
     }
 
     public void Click()

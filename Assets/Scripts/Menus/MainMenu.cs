@@ -20,6 +20,12 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     SimpleButton QuitBtn;
 
+    [SerializeField]
+    GameObject Credits;
+
+    [SerializeField]
+    GameObject Settings;
+
     bool QuittablePlatform => !Application.isEditor && Application.platform != RuntimePlatform.WebGLPlayer;
 
     private void OnEnable()
@@ -32,8 +38,9 @@ public class MainMenu : MonoBehaviour
         ResumeBtn.gameObject.SetActive(running);
         PlayBtn.Text = running ? "Restart" : "Play";
 
-        Debug.Log(Application.isEditor);
         QuitBtn.gameObject.SetActive(QuittablePlatform);
+
+        Show();
     }
 
     public void ResumePlay()
@@ -58,10 +65,21 @@ public class MainMenu : MonoBehaviour
     public void DoSettings()
     {
         Debug.Log("Settings...");
+        gameObject.SetActive(false);
+        Settings.SetActive(true);
     }
 
     public void DoCredits()
     {
         Debug.Log("Credits...");
+        gameObject.SetActive(false);
+        Credits.SetActive(true);
+    }
+
+    public void Show()
+    {
+        if (!gameObject.activeSelf) gameObject.SetActive(true);
+        Credits.SetActive(false);
+        Settings.SetActive(false);
     }
 }

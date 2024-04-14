@@ -4,8 +4,12 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public delegate void SelectButtonEvent(SimpleButton selected);
+
 public class SimpleButtonGroup : MonoBehaviour
 {
+    public event SelectButtonEvent OnSelectButton;
+    
     [SerializeField]
     SimpleButton[] Buttons;
 
@@ -25,6 +29,7 @@ public class SimpleButtonGroup : MonoBehaviour
                 _Selected?.DeSelect();
             }
             _Selected = value;
+            OnSelectButton?.Invoke(value);
         }        
     }
 
