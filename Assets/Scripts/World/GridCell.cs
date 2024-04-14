@@ -83,7 +83,9 @@ public class GridCell : MonoBehaviour
         } else
         {
             Map.Add(Coords, this);
+#if UNITY_EDITOR
             name = $"GridCells @ [{Coords.x}, {Coords.y}] ({name})";
+#endif
         }
     }
 

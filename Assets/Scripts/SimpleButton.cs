@@ -14,6 +14,7 @@ public class SimpleButton : MonoBehaviour
     Color SelectedColor;
 
     TextMeshProUGUI _colorTarget;
+
     TextMeshProUGUI ColorTarget {
         get { 
             if (_colorTarget == null)
@@ -21,6 +22,15 @@ public class SimpleButton : MonoBehaviour
                 _colorTarget = GetComponentInChildren<TextMeshProUGUI>();
             }
             return _colorTarget; 
+        }
+    }
+
+    public string Text
+    {
+        get => ColorTarget.text;
+        set
+        {
+            ColorTarget.text = value;
         }
     }
 
