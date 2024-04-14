@@ -151,12 +151,14 @@ public class SimpleButtonGroup : MonoBehaviour
 
     private void OnEnable()
     {
-        var defaultBtn = VisibleButtons.FirstOrDefault();
-        if (defaultBtn)
-        {
-            defaultBtn.Selected();
-        }
+        SelectDefault();
         RegisterCallbacks();
+    }
+
+    public void SelectDefault()
+    {
+        var defaultBtn = VisibleButtons.FirstOrDefault();
+        defaultBtn?.Selected();
     }
 
     private void OnDisable()

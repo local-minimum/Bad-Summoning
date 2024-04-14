@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class WallToggler : MonoBehaviour
+public class WallToggler : BlockableActions
 {
     [SerializeField]
     GameObject[] Walls;
@@ -162,7 +162,7 @@ public class WallToggler : MonoBehaviour
 
         Debug.Log("Press button");
 
-        if (!Interactable) { return; }
+        if (ActionsBlocked || !Interactable) { return; }
 
         On = !On;
         Speaker.PlayOneShot(ToggleSounds.GetRandomElement());

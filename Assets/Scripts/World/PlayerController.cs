@@ -27,7 +27,7 @@ public class PlayerController : GridEntity
         {
             _lookDirection = value;
             transform.rotation = _lookDirection.ToLookVector().AsQuaternion();
-            if (!MovementBlocked)
+            if (!ActionsBlocked)
                 OnPlayerMove?.Invoke(cell, cell, value);
         }
     }
@@ -65,19 +65,19 @@ public class PlayerController : GridEntity
     #region InputHandling
     public void OnMoveForward(InputAction.CallbackContext context)
     {
-        if (MovementBlocked) return;
+        if (ActionsBlocked) return;
         if (context.performed) Translate(LookDirection);
     }
 
     public void OnMoveBackward(InputAction.CallbackContext context)
     {
-        if (MovementBlocked) return;
+        if (ActionsBlocked) return;
         if (context.performed) Translate(LookDirection.Inverse());
     }
 
     public void OnMoveLeft(InputAction.CallbackContext context)
     {
-        if (MovementBlocked) return;
+        if (ActionsBlocked) return;
         if (context.performed)
         {
             if (GameSettings.InvertedControls)
@@ -92,7 +92,7 @@ public class PlayerController : GridEntity
 
     public void OnMoveRight(InputAction.CallbackContext context)
     {
-        if (MovementBlocked) return;
+        if (ActionsBlocked) return;
         if (context.performed)
         {
             if (GameSettings.InvertedControls)
@@ -108,7 +108,7 @@ public class PlayerController : GridEntity
 
     public void OnRotateCCW(InputAction.CallbackContext context)
     {
-        if (MovementBlocked) return;
+        if (ActionsBlocked) return;
         if (context.performed)
         {
             if (GameSettings.InvertedControls)
@@ -123,7 +123,7 @@ public class PlayerController : GridEntity
     }
     public void OnRotateCW(InputAction.CallbackContext context)
     {
-        if (MovementBlocked) return;
+        if (ActionsBlocked) return;
         if (context.performed)
         {
             if (GameSettings.InvertedControls)

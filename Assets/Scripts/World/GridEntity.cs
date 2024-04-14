@@ -2,13 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class GridEntity : MonoBehaviour
+public abstract class GridEntity : BlockableActions
 {
-    private static HashSet<MonoBehaviour> movementBlockers = new HashSet<MonoBehaviour>();
-    public static void BlockMovement(MonoBehaviour behaviour) => movementBlockers.Add(behaviour);
-    public static void RemoveMovementBlock(MonoBehaviour behaviour) => movementBlockers.Remove(behaviour);
-    public static bool MovementBlocked => movementBlockers.Count > 0;
-
     AudioSource _speaker;
     protected AudioSource Speaker
     {

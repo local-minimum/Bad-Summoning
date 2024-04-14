@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
@@ -26,6 +27,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     GameObject Settings;
 
+    [SerializeField]
+    SimpleButtonGroup ButtonGroup;
+
     bool QuittablePlatform => !Application.isEditor && Application.platform != RuntimePlatform.WebGLPlayer;
 
     private void OnEnable()
@@ -39,19 +43,26 @@ public class MainMenu : MonoBehaviour
         PlayBtn.Text = running ? "Restart" : "Play";
 
         QuitBtn.gameObject.SetActive(QuittablePlatform);
-
+        
         Show();
     }
 
     public void ResumePlay()
     {
         Debug.Log("Resume Play...");
+        if (!running)
+        {
+            Debug.LogError("Should not be possible to resume");
+            return;
+        }
+        BlockableActions.RemoveActionBlock(this);
         Time.timeScale = 1;
         gameObject.SetActive(false);
     }
 
     public void StartPlay()
     {
+        BlockableActions.RemoveActionBlock(this);
         Debug.Log("Start Play...");
         SceneManager.LoadScene(PlayScene);
     }
@@ -78,8 +89,15 @@ public class MainMenu : MonoBehaviour
 
     public void Show()
     {
+        BlockableActions.BlockAction(this);
         if (!gameObject.activeSelf) gameObject.SetActive(true);
         Credits.SetActive(false);
         Settings.SetActive(false);
+        ButtonGroup.SelectDefault();
+    }
+
+    public void Show(InputAction.CallbackContext context)
+    {
+        if (context.performed && !gameObject.activeSelf) Show();
     }
 }

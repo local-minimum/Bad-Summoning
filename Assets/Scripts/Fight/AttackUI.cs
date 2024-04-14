@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public delegate void AttackEvent(AttackModifier modifier);
 
-public class AttackUI : MonoBehaviour
+public class AttackUI : BlockableActions
 {
     [SerializeField, Range(0, 4)]
     float speed = 0.8f;
@@ -100,7 +100,7 @@ public class AttackUI : MonoBehaviour
 
     public void DoAttack(InputAction.CallbackContext context)
     {
-        if (!Fighting || Hidden || !context.performed) { return; }
+        if (ActionsBlocked || !Fighting || Hidden || !context.performed) { return; }
 
         var progress = Marker.Progress;
 

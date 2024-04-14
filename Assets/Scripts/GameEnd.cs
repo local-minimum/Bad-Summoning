@@ -42,7 +42,7 @@ public class GameEnd : MonoBehaviour
     {
         if (toCell == cell)
         {
-            GridEntity.BlockMovement(this);
+            GridEntity.BlockAction(this);
             PromptUI.instance.ShowText(message);
             OnGameEnd?.Invoke(forceDirection);
             endTime = Time.timeSinceLevelLoad + loadDelay;
