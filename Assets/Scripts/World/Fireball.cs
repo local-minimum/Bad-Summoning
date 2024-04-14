@@ -16,6 +16,12 @@ public class Fireball : MonoBehaviour
     [SerializeField]
     AudioClip[] Sounds;
 
+    [SerializeField, Range(0, 2)]
+    float textSwapFrequency = 0.4f;
+    
+    [SerializeField]
+    Texture[] BallTextures;
+
     [SerializeField, Range(0,5)]
     float soundPauseMin = 0.5f;
 
@@ -41,6 +47,8 @@ public class Fireball : MonoBehaviour
     {
         PlayerController.OnPlayerMove += PlayerController_OnPlayerMove;
         nextSound = Random.Range(soundPauseMin, soundPauseMax) + Time.timeSinceLevelLoad;
+        nextBallTex = Time.timeSinceLevelLoad + textSwapFrequency;
+        ballTexIdx = 0;
     }
 
     private void OnDisable()
@@ -75,6 +83,8 @@ public class Fireball : MonoBehaviour
     }
 
     float nextSound;
+    int ballTexIdx;
+    float nextBallTex;
 
     private void Update()
     {
@@ -85,6 +95,13 @@ public class Fireball : MonoBehaviour
         {
             nextSound = Random.Range(soundPauseMin, soundPauseMax) + Time.timeSinceLevelLoad;
             Speaker.PlayOneShot(Sounds.GetRandomElement());
+        }
+
+        if (Time.timeSinceLevelLoad > nextBallTex)
+        {
+            ballTexIdx++;
+            GetComponent<Renderer>().material.mainTexture = BallTextures.GetWrappingNth(ballTexIdx);
+            nextBallTex = Time.timeSinceLevelLoad + textSwapFrequency;
         }
     }
 }
