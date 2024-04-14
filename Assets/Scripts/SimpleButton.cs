@@ -40,17 +40,20 @@ public class SimpleButton : MonoBehaviour
     }
     public void Selected()
     {
+        Debug.Log($"Selected {name}");
         ColorTarget.color = SelectedColor;
         Group.Selected = this;
     }
 
     public void DeSelect()
     {
+        Debug.Log($"Deselected {name}");
         ColorTarget.color = DefaultColor;
     }
 
     public void Click()
     {
+        Debug.Log($"Clicked {name}");
         OnClick?.Invoke();
     }
 }
