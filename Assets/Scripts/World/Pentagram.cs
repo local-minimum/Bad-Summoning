@@ -1,11 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+
+public delegate void PentagramCompleteEvent();
+
 
 public class Pentagram : MonoBehaviour
 {
+    public static event PentagramCompleteEvent OnComplete;
+
     [SerializeField]
     Texture[] Stages;
+
+    [SerializeField, Range(0, 20)]
+    int StartStep = 1;
 
     int step;
 
@@ -19,13 +28,26 @@ public class Pentagram : MonoBehaviour
         Enemy.OnEnemyDeath -= Enemy_OnEnemyDeath;
     }
 
+    private void Start()
+    {
+        step = StartStep;
+        Sync();
+    }
+
     private void Enemy_OnEnemyDeath(Enemy enemy)
     {
         step++;
+        Sync();
+    }
+
+    void Sync()
+    {
         GetComponentInChildren<Renderer>().material.mainTexture = Stages.GetNthOrLast(step);
 
-        if (step >= Stages.Length - 1) {
+        if (step >= Stages.Length - 1)
+        {
             Debug.Log("No clock!");
+            OnComplete?.Invoke();
         }
     }
 }

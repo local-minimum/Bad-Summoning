@@ -61,6 +61,11 @@ public class SimpleButtonGroup : MonoBehaviour
 
     void RegisterCallbacks()
     {
+        if (Input == null) {
+            Debug.LogWarning("No keybindings");
+            return;
+        }
+
         foreach (var evt in Input.actionEvents)
         {
             switch (evt.actionId)

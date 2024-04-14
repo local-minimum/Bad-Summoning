@@ -64,6 +64,7 @@ public class MainMenu : MonoBehaviour
     {
         BlockableActions.RemoveActionBlock(this);
         Debug.Log("Start Play...");
+        Time.timeScale = 1;
         SceneManager.LoadScene(PlayScene);
     }
 

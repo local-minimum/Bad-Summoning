@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Intro : MonoBehaviour
 {
@@ -27,9 +29,27 @@ public class Intro : MonoBehaviour
     bool speechNotStarted = true;
     bool noMoreSubs = false;
 
+    [SerializeField]
+    Sprite[] Sprites;
+
+    [SerializeField, Range(0, 120)]
+    float[] ShowTimes;
+
+    int SpriteIdx;
+
+    [SerializeField]
+    Image MainImage;
+
+    [SerializeField]
+    SimpleButton SkipContinue;
+
+    [SerializeField]
+    string LevelScene = "Level";
+
     private void Start()
     {
         nextSubTime = Time.timeSinceLevelLoad + initialPause;
+        MainImage.enabled = false;
     }
 
     private void Update()
@@ -46,10 +66,27 @@ public class Intro : MonoBehaviour
             nextSubTime += SwapOutTime.GetNthOrLast(subIdx);
             subIdx++;
             
-            if (subIdx >= Subtitles.Length)
+            if (subIdx > Subtitles.Length)
             {
                 noMoreSubs = true;
+                SkipContinue.Text = "Continue";
             }
         }
+
+        if (SpriteIdx < ShowTimes.Length && Time.timeSinceLevelLoad > ShowTimes[SpriteIdx])
+        {
+            if (SpriteIdx == 0)
+            { 
+                MainImage.enabled = true; 
+            }
+
+            MainImage.sprite = Sprites[SpriteIdx];
+            SpriteIdx++;
+        }
+    }
+
+    public void DoSkipContinue()
+    {
+        SceneManager.LoadScene(LevelScene);
     }
 }
