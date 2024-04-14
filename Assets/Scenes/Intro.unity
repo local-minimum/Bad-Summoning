@@ -1048,7 +1048,7 @@ PrefabInstance:
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
       propertyPath: m_Pivot.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
@@ -1078,7 +1078,7 @@ PrefabInstance:
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 210
       objectReference: {fileID: 0}
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
