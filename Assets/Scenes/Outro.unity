@@ -243,8 +243,14 @@ MonoBehaviour:
   NextScene: MainMenuScene
   frames:
   - time: 0
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 9b2b9dcb515b4cb4e8d5b5d7ef87ee6f, type: 3}
     subtitle: They sat down by the pool.
+  - time: 1
+    sprite: {fileID: 21300000, guid: 420d46ec82e1ab14eb1a6a4f6dc3eece, type: 3}
+    subtitle: 
+  - time: 2
+    sprite: {fileID: 21300000, guid: f824647549ec93b49a6cec426b41d1ec, type: 3}
+    subtitle: 
   - time: 2.55
     sprite: {fileID: 0}
     subtitle: There obviously were no fish about.
@@ -252,7 +258,7 @@ MonoBehaviour:
     sprite: {fileID: 0}
     subtitle: But sometimes, it's more important to go through the motions...
   - time: 10
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 88a5d1ef4948e4f47b0e8f67eda7c990, type: 3}
     subtitle: Pick up the rod.
   - time: 11.6
     sprite: {fileID: 0}
@@ -261,7 +267,7 @@ MonoBehaviour:
     sprite: {fileID: 0}
     subtitle: Knowing nothing could touch them again.
   - time: 17.1
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: a13e5836f3f9f594a909b95e403ab310, type: 3}
     subtitle: That this was now their domain.
   - time: 21
     sprite: {fileID: 0}
@@ -1046,7 +1052,7 @@ PrefabInstance:
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
@@ -1056,7 +1062,7 @@ PrefabInstance:
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
@@ -1066,7 +1072,7 @@ PrefabInstance:
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 52.5
       objectReference: {fileID: 0}
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
@@ -1106,12 +1112,12 @@ PrefabInstance:
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 279.89996
       objectReference: {fileID: 0}
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -26.25
       objectReference: {fileID: 0}
     - target: {fileID: 6498388036126737248, guid: 393a3f3ffdfbd344493432c980d5bb7e,
         type: 3}
