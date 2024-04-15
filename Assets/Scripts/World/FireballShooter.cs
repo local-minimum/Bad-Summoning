@@ -40,7 +40,7 @@ public class FireballShooter : MonoBehaviour
 
     Fireball GetFireball()
     {
-        var ball = Fireballs.FirstOrDefault(f => !f.gameObject.activeSelf);
+        var ball = Fireballs?.FirstOrDefault(f => !f.gameObject.activeSelf);
         if (ball != null) return ball;
 
         var newBall = Instantiate(FireballPrefab, transform);
@@ -51,6 +51,12 @@ public class FireballShooter : MonoBehaviour
     private void Shoot()
     {
         var ball = GetFireball();
+        if (ball == null)
+        {
+            Debug.LogError($"{name} Did not get a fireball!");
+            return;
+        }
+
         ball.transform.localPosition = Vector3.zero;
 
         ball.Speed = transform.forward * velocity;
@@ -60,7 +66,7 @@ public class FireballShooter : MonoBehaviour
 
         ball.gameObject.SetActive(true);
 
-        Speaker.PlayOneShot(ShootSounds.GetRandomElement());
+        Speaker?.PlayOneShot(ShootSounds.GetRandomElement());
     }
 
     float nextBall;

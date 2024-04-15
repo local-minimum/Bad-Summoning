@@ -73,6 +73,13 @@ public class PlayerController : GridEntity
         ChangeCell(toCell, (oldCell, newCell) => {
             
             if (oldCell != null) oldCell.HasPlayer = false;
+
+            if (newCell != cell)
+            {
+                Debug.LogWarning("Something has teleported the player. I yield");
+                return;
+            }
+
             newCell.HasPlayer = true;
 
             Debug.Log($"Player Move: {newCell.Coords} {LookDirection}");

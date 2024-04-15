@@ -17,7 +17,8 @@ public abstract class GridEntity : BlockableActions
         }
     }
 
-    protected GridCell cell;
+    private GridCell _cell;
+    protected GridCell cell => _cell;
 
     protected void ChangeCell(GridCell newCell, System.Action<GridCell, GridCell> OnChange)
     {
@@ -29,7 +30,7 @@ public abstract class GridEntity : BlockableActions
 
         var oldCell = cell;
 
-        cell = newCell;        
+        _cell = newCell;        
         transform.position = cell.Coords.ToPosition();
         
         OnChange?.Invoke(oldCell, cell);

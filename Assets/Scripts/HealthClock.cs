@@ -10,6 +10,9 @@ public class HealthClock : MonoBehaviour
     public static event HealthTimeZero OnHealthTimeZero;
 
     [SerializeField]
+    AudioClip[] CountDownSounds;
+
+    [SerializeField]
     Sprite[] NormalNumbers;
 
     [SerializeField]
@@ -106,6 +109,8 @@ public class HealthClock : MonoBehaviour
         if (FreeFromTime) return;
 
         HealthTime = Mathf.Max(0, HealthTime - ball.BallDamage);
+
+        PlayCountdownSound();
         SyncDisplay(true);
 
         nextTick = Time.timeSinceLevelLoad + tickFrequency;
@@ -118,10 +123,25 @@ public class HealthClock : MonoBehaviour
 
         HealthTime = Mathf.Max(0, HealthTime - damage);
 
+        PlayCountdownSound();
         SyncDisplay(true);
 
         nextTick = Time.timeSinceLevelLoad + tickFrequency;
         CheckDeath();
+    }
+
+    void PlayCountdownSound()
+    {
+        if (CountDownSounds == null)
+        {
+            return;
+        }
+
+        var sound = CountDownSounds.GetNthOrDefault(HealthTime, null);
+        if (sound != null)
+        {
+            Speaker?.PlayOneShot(sound);
+        }        
     }
 
     bool _FreeFromTime = false;
@@ -151,7 +171,10 @@ public class HealthClock : MonoBehaviour
         {
             nextTick = Time.timeSinceLevelLoad + tickFrequency;
             HealthTime--;
+
+            PlayCountdownSound();
             SyncDisplay(true);
+
             CheckDeath();
         }
     }
