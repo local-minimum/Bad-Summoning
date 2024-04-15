@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,6 +17,9 @@ public class PlayerController : GridEntity
     AudioClip[] WalkSounds;
     [SerializeField]
     AudioClip[] BallHits;
+
+    [SerializeField]
+    Transform RayCaster;
 
     Direction _lookDirection;
     public Direction LookDirection
@@ -54,7 +56,22 @@ public class PlayerController : GridEntity
     
     private void ChangeCell(GridCell toCell)
     {
+        if (Physics.Raycast(
+            RayCaster.transform.position, 
+            LookDirection.ToLookVector().ToDirection(),
+            out var hitInfo,
+            3.5f
+        ))
+        {
+            var ball = hitInfo.transform.GetComponent<Fireball>();
+            if (ball != null)
+            {
+                ball.CollideWithPlayer();
+            }
+        }
+
         ChangeCell(toCell, (oldCell, newCell) => {
+            
             if (oldCell != null) oldCell.HasPlayer = false;
             newCell.HasPlayer = true;
 

@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -45,36 +42,26 @@ public class Fireball : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.OnPlayerMove += PlayerController_OnPlayerMove;
         nextSound = Random.Range(soundPauseMin, soundPauseMax) + Time.timeSinceLevelLoad;
         nextBallTex = Time.timeSinceLevelLoad + textSwapFrequency;
         ballTexIdx = 0;
     }
 
-    private void OnDisable()
+    public void CollideWithPlayer()
     {
-        PlayerController.OnPlayerMove -= PlayerController_OnPlayerMove;
-    }
-
-    GridCell Cell => GridCell.Map.GetValueOrDefault(transform.position.ToVector2Int());
-
-    private void PlayerController_OnPlayerMove(GridCell fromCell, GridCell toCell, Direction lookDirection)
-    {
-        if (toCell == Cell)
-        {
-            OnHitPlayer?.Invoke(this);
-            Recycle();
-        }
+        Recycle();
+        OnHitPlayer?.Invoke(this);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.GetComponentInParent<PlayerController>() != null)
         {
-            OnHitPlayer?.Invoke(this);
-        }
-
-        Recycle();
+            CollideWithPlayer();
+        } else
+        {
+            Recycle();
+        } 
     }
 
     private void Recycle()

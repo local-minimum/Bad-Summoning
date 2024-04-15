@@ -92,6 +92,8 @@ public static class MathExtensions
     public static Vector3 ToPosition(this Vector2Int coords, int elevation = 0, int scale = 3) => 
         new Vector3(coords.x * scale, elevation * scale, coords.y * scale);
 
+    public static Vector3 ToDirection(this Vector2Int direction) => new Vector3(direction.x, 0, direction.y);
+
     #endregion
 
     #region RectInt 
