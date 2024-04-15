@@ -27,6 +27,7 @@ public class PlayerController : GridEntity
         {
             _lookDirection = value;
             transform.rotation = _lookDirection.ToLookVector().AsQuaternion();
+            Debug.Log($"Player Rotate: {LookDirection}");
             if (!ActionsBlocked)
                 OnPlayerMove?.Invoke(cell, cell, value);
         }
@@ -50,14 +51,14 @@ public class PlayerController : GridEntity
         Speaker.PlayOneShot(WalkSounds.GetRandomElement());
         ChangeCell(newCell);
     }
-
-
+    
     private void ChangeCell(GridCell toCell)
     {
         ChangeCell(toCell, (oldCell, newCell) => {
             if (oldCell != null) oldCell.HasPlayer = false;
             newCell.HasPlayer = true;
 
+            Debug.Log($"Player Move: {newCell.Coords} {LookDirection}");
             OnPlayerMove?.Invoke(oldCell, newCell, LookDirection);
          });        
     }
@@ -178,17 +179,11 @@ public class PlayerController : GridEntity
         Respawn();
     }
 
+    SpinDirection CauseSpin = SpinDirection.None;
+
     private void Spinner_OnSpinPlayer(SpinDirection direction)
     {
-        switch (direction)
-        {
-            case SpinDirection.Clockwise:
-                LookDirection = LookDirection.RotateCW();
-                break;
-            case SpinDirection.CounterClockwise:
-                LookDirection = LookDirection.RotateCCW();
-                break;
-        }
+        CauseSpin = direction;
     }
 
     static Vector2Int SpawnCoordinates;
@@ -206,6 +201,18 @@ public class PlayerController : GridEntity
         {
             SpawnCoordinates = transform.position.ToVector2Int();
             Respawn();
+        }
+
+        switch (CauseSpin)
+        {
+            case SpinDirection.Clockwise:
+                LookDirection = LookDirection.RotateCW();
+                CauseSpin = SpinDirection.None;
+                break;
+            case SpinDirection.CounterClockwise:
+                LookDirection = LookDirection.RotateCCW();
+                CauseSpin = SpinDirection.None;
+                break;
         }
     }
 

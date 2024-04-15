@@ -59,7 +59,7 @@ public class WallToggler : BlockableActions
         var playerOnRightCell = toCell == cell;
         var buttonAllowsPress = On || AllowRepeatPresses;
 
-        Debug.Log($"{name}: Dir {playerLooksRightDirection} Cell {playerOnRightCell} Can {buttonAllowsPress}");
+        // Debug.Log($"{name}: Dir {playerLooksRightDirection} Cell {playerOnRightCell} Can {buttonAllowsPress}");
         
         Interactable = playerLooksRightDirection && playerOnRightCell && buttonAllowsPress;
     }

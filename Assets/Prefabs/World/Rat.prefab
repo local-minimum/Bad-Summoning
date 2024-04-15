@@ -240,7 +240,7 @@ MonoBehaviour:
   leftHandWound: {fileID: 4103471177418528168}
   rightHandWound: {fileID: 762669713921299652}
   startHealth: 5
-  attackDamage: 10
+  attackDamage: 6
   woundAnimationDuration: 0.1
   woundIntermission: 0.2
   lastWoundLinger: 0.4

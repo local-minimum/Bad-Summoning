@@ -87,6 +87,7 @@ public class AttackUI : BlockableActions
     private void PlayerController_OnPlayerMove(GridCell fromCell, GridCell toCell, Direction lookDirection)
     {
         var facingEnemy = toCell.Neighbour(lookDirection)?.HasEnemy ?? false;
+
         if (Fighting && !facingEnemy)
         {
             Hide();
