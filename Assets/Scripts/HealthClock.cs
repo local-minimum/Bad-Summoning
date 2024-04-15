@@ -30,6 +30,12 @@ public class HealthClock : MonoBehaviour
     [SerializeField, Range(0, 1)]
     float showBadTime = 0.2f;
 
+    [SerializeField]
+    AudioSource Speaker;
+
+    [SerializeField]
+    AudioClip CompletionVoiceline;
+
     public int HealthTime {  get; private set; }
 
     private void Start()
@@ -118,7 +124,19 @@ public class HealthClock : MonoBehaviour
         CheckDeath();
     }
 
-    public bool FreeFromTime { get; set; } = false;
+    bool _FreeFromTime = false;
+    public bool FreeFromTime { 
+        get => _FreeFromTime; 
+        set
+        {
+            if (_FreeFromTime == false && value == true)
+            {
+                Speaker.PlayOneShot(CompletionVoiceline);
+            }
+            _FreeFromTime = value;
+
+        }
+    }
 
     private void Update()
     {
