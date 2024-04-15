@@ -10428,7 +10428,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3861362504413979314, guid: bceaeb2b838660f4989e71dafb25b7de,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1639342964}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bceaeb2b838660f4989e71dafb25b7de, type: 3}
 --- !u!4 &772250600 stripped
@@ -16562,11 +16566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 3861362504413979314, guid: bceaeb2b838660f4989e71dafb25b7de,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1639342964}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bceaeb2b838660f4989e71dafb25b7de, type: 3}
 --- !u!4 &1275654536 stripped
@@ -20391,7 +20391,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1275654536}
+    m_TransformParent: {fileID: 772250600}
     m_Modifications:
     - target: {fileID: 3021983673562849707, guid: 28a3a788f66eaed4e87839c83e2aaad2,
         type: 3}
@@ -20411,7 +20411,7 @@ PrefabInstance:
     - target: {fileID: 3021983673562849707, guid: 28a3a788f66eaed4e87839c83e2aaad2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 3021983673562849707, guid: 28a3a788f66eaed4e87839c83e2aaad2,
         type: 3}
@@ -20421,7 +20421,7 @@ PrefabInstance:
     - target: {fileID: 3021983673562849707, guid: 28a3a788f66eaed4e87839c83e2aaad2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 3021983673562849707, guid: 28a3a788f66eaed4e87839c83e2aaad2,
         type: 3}
@@ -20436,7 +20436,7 @@ PrefabInstance:
     - target: {fileID: 3021983673562849707, guid: 28a3a788f66eaed4e87839c83e2aaad2,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 3021983673562849707, guid: 28a3a788f66eaed4e87839c83e2aaad2,
         type: 3}
@@ -20452,6 +20452,11 @@ PrefabInstance:
         type: 3}
       propertyPath: Message
       value: Be kind to Sarah II
+      objectReference: {fileID: 0}
+    - target: {fileID: 6222990015230652854, guid: 28a3a788f66eaed4e87839c83e2aaad2,
+        type: 3}
+      propertyPath: ReadWhenFacing
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

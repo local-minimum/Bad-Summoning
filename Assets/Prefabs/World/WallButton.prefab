@@ -126,7 +126,7 @@ MonoBehaviour:
   OnTex: {fileID: 2800000, guid: dcd665bf9db423545b1673807bfd9433, type: 3}
   OffTex: {fileID: 2800000, guid: 54e12912497b0324289c13b279ce8d70, type: 3}
   ToggleSounds:
-  - {fileID: 8300000, guid: b40ebc091bcb72e4b8df7d89ab9044b7, type: 3}
+  - {fileID: 8300000, guid: 21ee9f2babda8d144ab4d4ca6da998e4, type: 3}
   prompt: Press
 --- !u!82 &5123151974951957108
 AudioSource:
