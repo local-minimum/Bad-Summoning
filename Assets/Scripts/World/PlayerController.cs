@@ -60,7 +60,7 @@ public class PlayerController : GridEntity
             RayCaster.transform.position, 
             LookDirection.ToLookVector().ToDirection(),
             out var hitInfo,
-            3.5f
+            2.75f
         ))
         {
             var ball = hitInfo.transform.GetComponent<Fireball>();
