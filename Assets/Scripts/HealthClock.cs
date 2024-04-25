@@ -84,6 +84,7 @@ public class HealthClock : MonoBehaviour
         Fireball.OnHitPlayer += Fireball_OnHitPlayer;
         GameEnd.OnGameEnd += GameEnd_OnGameEnd;
         Pentagram.OnComplete += Pentagram_OnComplete;
+        PlayerController.OnPlayerMove += PlayerController_OnPlayerMove;
     }
 
 
@@ -93,7 +94,14 @@ public class HealthClock : MonoBehaviour
         Fireball.OnHitPlayer -= Fireball_OnHitPlayer;
         GameEnd.OnGameEnd -= GameEnd_OnGameEnd;
         Pentagram.OnComplete -= Pentagram_OnComplete;
+        PlayerController.OnPlayerMove -= PlayerController_OnPlayerMove;
     }
+
+    private void PlayerController_OnPlayerMove(GridCell fromCell, GridCell toCell, Direction lookDirection)
+    {
+        InPentagram = toCell.gameObject.GetComponentInChildren<Pentagram>() != null;
+    }
+
     private void Pentagram_OnComplete()
     {
         FreeFromTime = true;
@@ -106,7 +114,7 @@ public class HealthClock : MonoBehaviour
 
     private void Fireball_OnHitPlayer(Fireball ball)
     {
-        if (FreeFromTime) return;
+        if (FreeFromTime || InPentagram) return;
 
         HealthTime = Mathf.Max(0, HealthTime - ball.BallDamage);
 
@@ -119,7 +127,7 @@ public class HealthClock : MonoBehaviour
 
     private void Enemy_OnAttackPlayer(int damage)
     {
-        if (FreeFromTime) return;
+        if (FreeFromTime || InPentagram) return;
 
         HealthTime = Mathf.Max(0, HealthTime - damage);
 
@@ -158,8 +166,18 @@ public class HealthClock : MonoBehaviour
         }
     }
 
+    bool InPentagram { get; set; } = true;
+
+
     private void Update()
     {
+        if (InPentagram)
+        {
+            HealthTime = StartHealthTime;
+            SyncDisplay(false);
+            return;
+        }
+
         if (FreeFromTime || HealthTime == 0) return;
 
         if (showingBad && Time.timeSinceLevelLoad > hideBadTime)
