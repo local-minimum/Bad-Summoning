@@ -71,7 +71,7 @@ public class Spinner : MonoBehaviour
         hint.material.color = color;
 
         // Rotate
-        var direction = spin == SpinDirection.CounterClockwise ? 1 : -1;
+        var direction = spin == SpinDirection.CounterClockwise ? -1 : 1;
         var rotation = direction * hintRotationSpeed.Evaluate(Time.timeSinceLevelLoad) * hintSpeedMultiplier * Time.deltaTime;
         hint.transform.Rotate(Vector3.up, rotation, Space.World);
     }

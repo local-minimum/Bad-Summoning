@@ -51,14 +51,14 @@ public class PlayerController : GridEntity
         }
 
         Speaker.PlayOneShot(WalkSounds.GetRandomElement());
-        ChangeCell(newCell);
+        ChangeCell(newCell, direction);
     }
-    
-    private void ChangeCell(GridCell toCell)
+
+    private void ChangeCell(GridCell toCell, Direction direction)
     {
         if (Physics.Raycast(
             RayCaster.transform.position, 
-            LookDirection.ToLookVector().ToDirection(),
+            direction.ToLookVector().ToDirection(),
             out var hitInfo,
             2.75f
         ))
@@ -214,7 +214,7 @@ public class PlayerController : GridEntity
 
     void Respawn()
     {
-        ChangeCell(GridCell.Map[SpawnCoordinates]);
+        ChangeCell(GridCell.Map[SpawnCoordinates], LookDirection);
         LookDirection = startDirection;
         Speaker.PlayOneShot(AngrySounds.GetRandomElement());
     }
