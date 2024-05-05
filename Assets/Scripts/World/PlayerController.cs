@@ -54,7 +54,7 @@ public class PlayerController : GridEntity
         ChangeCell(newCell, direction);
     }
 
-    private void ChangeCell(GridCell toCell, Direction direction)
+    private void ChangeCell(GridCell toCell, Direction direction, bool allowTeleport = false)
     {
         if (Physics.Raycast(
             RayCaster.transform.position, 
@@ -70,21 +70,25 @@ public class PlayerController : GridEntity
             }
         }
 
-        ChangeCell(toCell, (oldCell, newCell) => {
-            
-            if (oldCell != null) oldCell.HasPlayer = false;
+        ChangeCell(
+            toCell, 
+            (oldCell, newCell) => {
+                
+                if (oldCell != null) oldCell.HasPlayer = false;
 
-            if (newCell != cell)
-            {
-                Debug.LogWarning("Something has teleported the player. I yield");
-                return;
-            }
+                if (oldCell != this.oldCell)
+                {
+                    Debug.LogWarning("Something has teleported the player. I yield");
+                    return;
+                }
 
-            newCell.HasPlayer = true;
+                newCell.HasPlayer = true;
 
-            Debug.Log($"Player Move: {newCell.Coords} {LookDirection}");
-            OnPlayerMove?.Invoke(oldCell, newCell, LookDirection);
-         });        
+                Debug.Log($"Player Move: {newCell.Coords} {LookDirection}");
+                OnPlayerMove?.Invoke(oldCell, newCell, LookDirection);
+             },
+            allowTeleport
+            );        
     }
 
     #region InputHandling
@@ -214,7 +218,8 @@ public class PlayerController : GridEntity
 
     void Respawn()
     {
-        ChangeCell(GridCell.Map[SpawnCoordinates], LookDirection);
+        Debug.Log($"== Player Respawned @ {SpawnCoordinates} ==");
+        ChangeCell(GridCell.Map[SpawnCoordinates], LookDirection, true);
         LookDirection = startDirection;
         Speaker.PlayOneShot(AngrySounds.GetRandomElement());
     }
@@ -230,10 +235,12 @@ public class PlayerController : GridEntity
         switch (CauseSpin)
         {
             case SpinDirection.Clockwise:
+                Debug.Log("Spinning player clockwise");
                 LookDirection = LookDirection.RotateCW();
                 CauseSpin = SpinDirection.None;
                 break;
             case SpinDirection.CounterClockwise:
+                Debug.Log("Spinning player counter clockwise");
                 LookDirection = LookDirection.RotateCCW();
                 CauseSpin = SpinDirection.None;
                 break;

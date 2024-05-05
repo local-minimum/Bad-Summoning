@@ -17,18 +17,25 @@ public abstract class GridEntity : BlockableActions
         }
     }
 
+    protected GridCell oldCell { get; private set; }
     private GridCell _cell;
     protected GridCell cell => _cell;
 
-    protected void ChangeCell(GridCell newCell, System.Action<GridCell, GridCell> OnChange)
+    protected void ChangeCell(GridCell newCell, System.Action<GridCell, GridCell> OnChange, bool allowTeleport = false)
     {
         if (newCell == null || newCell.Occupied)
         {
             return;
         }
 
+        if (oldCell != null && newCell.Coords.ManhattanDistance(cell.Coords) > 1 && !allowTeleport)
+        {
+            Debug.LogWarning($"Teleporting is not allowed! {cell.Coords}->{newCell.Coords} = {cell.Coords.ManhattanDistance(newCell.Coords)}");
+            return;
+        }
 
-        var oldCell = cell;
+        Debug.Log($"OldCell: {oldCell?.Coords} Cell: {cell?.Coords} NewCell: {newCell.Coords}");
+        oldCell = cell;
 
         _cell = newCell;        
         transform.position = cell.Coords.ToPosition();

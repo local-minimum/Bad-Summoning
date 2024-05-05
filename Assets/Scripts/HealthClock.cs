@@ -39,6 +39,9 @@ public class HealthClock : MonoBehaviour
     [SerializeField]
     AudioClip CompletionVoiceline;
 
+    [SerializeField, Range(0, 1)]
+    float respawnBlockTime = 0.5f;
+
     public int HealthTime {  get; private set; }
 
     private void Start()
@@ -168,9 +171,17 @@ public class HealthClock : MonoBehaviour
 
     bool InPentagram { get; set; } = true;
 
+    float releaseBlockTime;
+    bool blockingActions;
 
     private void Update()
     {
+        if (blockingActions && Time.timeSinceLevelLoad > releaseBlockTime)
+        {
+            blockingActions = false;
+            BlockableActions.RemoveActionBlock(this);
+        }
+
         if (InPentagram)
         {
             HealthTime = StartHealthTime;
@@ -203,6 +214,10 @@ public class HealthClock : MonoBehaviour
 
         if (HealthTime <= 0)
         {
+            BlockableActions.BlockAction(this);
+            blockingActions = true;
+            releaseBlockTime = Time.timeSinceLevelLoad + respawnBlockTime;
+
             OnHealthTimeZero?.Invoke();
             HealthTime = StartHealthTime;
             nextTick = Time.timeSinceLevelLoad + tickFrequency;
